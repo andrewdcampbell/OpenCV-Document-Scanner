@@ -14,6 +14,15 @@ This project makes use of the transform and imutils modules from pyimagesearch (
 * The scanner can also process an entire directory of images automatically and save the output in an output directory:
 ![Image Directory of images to be processed](https://github.com/andrewdcampbell/doc_scanner/blob/master/before_after.gif)
 
+#### Here are some examples of images before and after scan:
+<img src="https://github.com/andrewdcampbell/doc_scanner/blob/master/sample_images/cell_pic.jpg" height="450"> <img src="https://github.com/andrewdcampbell/doc_scanner/blob/master/output/cell_pic.jpg" height="450">
+
+<img src="https://github.com/andrewdcampbell/doc_scanner/blob/master/sample_images/receipt.jpg" height="450"> <img src="https://github.com/andrewdcampbell/doc_scanner/blob/master/output/receipt.jpg" height="450">
+
+<img src="https://github.com/andrewdcampbell/doc_scanner/blob/master/sample_images/math_cheat_sheet.JPG" height="450"> <img src="https://github.com/andrewdcampbell/doc_scanner/blob/master/output/math_cheat_sheet.JPG" height="450">
+
+<img src="https://github.com/andrewdcampbell/doc_scanner/blob/master/sample_images/dollar_bill.JPG" width="350"> <img src="https://github.com/andrewdcampbell/doc_scanner/blob/master/output/dollar_bill.JPG" width="350">
+
 
 ### Usage
 ```
@@ -21,9 +30,9 @@ python scan.py (--images <IMG_DIR> | --image <IMG_PATH>) [-i]
 ```
 * For example, to scan a single image with interactive mode:
 ```
-python scan.py --image images/page.jpg -i
+python scan.py --image sample_images/desk.JPG -i
 ```
 * To scan all images in a directory automatically:
 ```
-python scan.py --images images
+python scan.py --images sample_images
 ```
