@@ -28,11 +28,11 @@ This project makes use of the transform and imutils modules from pyimagesearch (
 ```
 python scan.py (--images <IMG_DIR> | --image <IMG_PATH>) [-i]
 ```
-* For example, to scan a single image with interactive mode:
+* The `-i` flag enables interactive mode, where you will be prompted to click and drag the corners of the document. For example, to scan a single image with interactive mode enabled:
 ```
 python scan.py --image sample_images/desk.JPG -i
 ```
-* To scan all images in a directory automatically:
+* Alternatively, to scan all images in a directory without any input:
 ```
 python scan.py --images sample_images
 ```
