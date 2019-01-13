@@ -123,8 +123,7 @@ class DocScanner(object):
             lines = []
 
             # find the horizontal lines (connected-components -> bounding boxes -> final lines)
-            contours = cv2.findContours(horizontal_lines_canvas, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
-            contours = contours[1]
+            (contours, hierarchy) = cv2.findContours(horizontal_lines_canvas, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
             contours = sorted(contours, key=lambda c: cv2.arcLength(c, True), reverse=True)[:2]
             horizontal_lines_canvas = np.zeros(img.shape, dtype=np.uint8)
             for contour in contours:
@@ -139,8 +138,7 @@ class DocScanner(object):
                 corners.append((max_x, right_y))
 
             # find the vertical lines (connected-components -> bounding boxes -> final lines)
-            contours = cv2.findContours(vertical_lines_canvas, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
-            contours = contours[1]
+            (contours, hierarchy) = cv2.findContours(vertical_lines_canvas, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
             contours = sorted(contours, key=lambda c: cv2.arcLength(c, True), reverse=True)[:2]
             vertical_lines_canvas = np.zeros(img.shape, dtype=np.uint8)
             for contour in contours:
@@ -227,7 +225,7 @@ class DocScanner(object):
 
         # also attempt to find contours directly from the edged image, which occasionally 
         # produces better results
-        (_, cnts, hierarchy) = cv2.findContours(edged.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+        (cnts, hierarchy) = cv2.findContours(edged.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
         cnts = sorted(cnts, key=cv2.contourArea, reverse=True)[:5]
 
         # loop over the contours
