@@ -191,7 +191,7 @@ class DocScanner(object):
 
         # dilate helps to remove potential holes between edge segments
         kernel = cv2.getStructuringElement(cv2.MORPH_RECT,(MORPH,MORPH))
-        dilated = cv2.dilate(gray, kernel)
+        dilated = cv2.morphologyEx(gray, cv2.MORPH_CLOSE, kernel)
 
         # find edges and mark them in the output map using the Canny algorithm
         edged = cv2.Canny(dilated, 0, CANNY)
