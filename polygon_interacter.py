@@ -1,7 +1,6 @@
 import numpy as np
 from matplotlib.lines import Line2D
 from matplotlib.artist import Artist
-from matplotlib.mlab import dist_point_to_segment
 
 
 class PolygonInteractor(object):

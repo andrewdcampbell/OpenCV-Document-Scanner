@@ -17,6 +17,7 @@ import matplotlib.pyplot as plt
 import itertools
 import math
 import cv2
+from pylsd.lsd import lsd
 
 import argparse
 import os
@@ -92,8 +93,7 @@ class DocScanner(object):
         This is a utility function used by get_contours. The input image is expected 
         to be rescaled and Canny filtered prior to be passed in.
         """
-        lsd = cv2.createLineSegmentDetector()
-        lines = lsd.detect(img)[0]
+        lines = lsd(img)
 
         # massages the output from LSD
         # LSD operates on edges. One "line" has 2 edges, and so we need to combine the edges back into lines
@@ -112,7 +112,7 @@ class DocScanner(object):
             horizontal_lines_canvas = np.zeros(img.shape, dtype=np.uint8)
             vertical_lines_canvas = np.zeros(img.shape, dtype=np.uint8)
             for line in lines:
-                x1, y1, x2, y2 = line
+                x1, y1, x2, y2, _ = line
                 if abs(x2 - x1) > abs(y2 - y1):
                     (x1, y1), (x2, y2) = sorted(((x1, y1), (x2, y2)), key=lambda pt: pt[0])
                     cv2.line(horizontal_lines_canvas, (max(x1 - 5, 0), y1), (min(x2 + 5, img.shape[1] - 1), y2), 255, 2)
@@ -123,8 +123,7 @@ class DocScanner(object):
             lines = []
 
             # find the horizontal lines (connected-components -> bounding boxes -> final lines)
-            contours = cv2.findContours(horizontal_lines_canvas, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
-            contours = contours[1]
+            (contours, hierarchy) = cv2.findContours(horizontal_lines_canvas, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
             contours = sorted(contours, key=lambda c: cv2.arcLength(c, True), reverse=True)[:2]
             horizontal_lines_canvas = np.zeros(img.shape, dtype=np.uint8)
             for contour in contours:
@@ -139,8 +138,7 @@ class DocScanner(object):
                 corners.append((max_x, right_y))
 
             # find the vertical lines (connected-components -> bounding boxes -> final lines)
-            contours = cv2.findContours(vertical_lines_canvas, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
-            contours = contours[1]
+            (contours, hierarchy) = cv2.findContours(vertical_lines_canvas, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
             contours = sorted(contours, key=lambda c: cv2.arcLength(c, True), reverse=True)[:2]
             vertical_lines_canvas = np.zeros(img.shape, dtype=np.uint8)
             for contour in contours:
@@ -191,7 +189,7 @@ class DocScanner(object):
 
         # dilate helps to remove potential holes between edge segments
         kernel = cv2.getStructuringElement(cv2.MORPH_RECT,(MORPH,MORPH))
-        dilated = cv2.dilate(gray, kernel)
+        dilated = cv2.morphologyEx(gray, cv2.MORPH_CLOSE, kernel)
 
         # find edges and mark them in the output map using the Canny algorithm
         edged = cv2.Canny(dilated, 0, CANNY)
@@ -227,7 +225,7 @@ class DocScanner(object):
 
         # also attempt to find contours directly from the edged image, which occasionally 
         # produces better results
-        (_, cnts, hierarchy) = cv2.findContours(edged.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+        (cnts, hierarchy) = cv2.findContours(edged.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
         cnts = sorted(cnts, key=cv2.contourArea, reverse=True)[:5]
 
         # loop over the contours
