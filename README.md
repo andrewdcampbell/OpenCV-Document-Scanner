@@ -9,19 +9,19 @@ On my test dataset of 280 images, the program correctly detected the corners of 
 This project makes use of the transform and imutils modules from pyimagesearch (which can be accessed [here](http://www.pyimagesearch.com/2014/09/01/build-kick-ass-mobile-document-scanner-just-5-minutes/)). The UI code for the interactive mode is adapted from `poly_editor.py` from [here](https://matplotlib.org/examples/event_handling/poly_editor.html).
 
 * You can manually click and drag the corners of the document to be perspective transformed:
-![Example of interactive GUI](https://github.com/andrewdcampbell/doc_scanner/blob/master/ui.gif)
+![Example of interactive GUI](readme_media/ui.gif)
 
 * The scanner can also process an entire directory of images automatically and save the output in an output directory:
-![Image Directory of images to be processed](https://github.com/andrewdcampbell/doc_scanner/blob/master/before_after.gif)
+![Image Directory of images to be processed](readme_media/before_after.gif)
 
 #### Here are some examples of images before and after scan:
-<img src="https://github.com/andrewdcampbell/doc_scanner/blob/master/sample_images/cell_pic.jpg" height="450"> <img src="https://github.com/andrewdcampbell/doc_scanner/blob/master/output/cell_pic.jpg" height="450">
+<img src="sample_images/cell_pic.jpg" height="450"> <img src="sample_output/cell_pic.jpg" height="450">
 
-<img src="https://github.com/andrewdcampbell/doc_scanner/blob/master/sample_images/receipt.jpg" height="450"> <img src="https://github.com/andrewdcampbell/doc_scanner/blob/master/output/receipt.jpg" height="450">
+<img src="sample_images/receipt.jpg" height="450"> <img src="sample_output/receipt.jpg" height="450">
 
-<img src="https://github.com/andrewdcampbell/doc_scanner/blob/master/sample_images/math_cheat_sheet.JPG" height="450"> <img src="https://github.com/andrewdcampbell/doc_scanner/blob/master/output/math_cheat_sheet.JPG" height="450">
+<img src="sample_images/math_cheat_sheet.JPG" height="450"> <img src="sample_output/math_cheat_sheet.JPG" height="450">
 
-<img src="https://github.com/andrewdcampbell/doc_scanner/blob/master/sample_images/dollar_bill.JPG" width="350"> <img src="https://github.com/andrewdcampbell/doc_scanner/blob/master/output/dollar_bill.JPG" width="350">
+<img src="sample_images/dollar_bill.JPG" width="350"> <img src="sample_output/dollar_bill.JPG" width="350">
 
 
 ### Usage

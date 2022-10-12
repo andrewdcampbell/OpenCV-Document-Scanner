@@ -25,7 +25,7 @@ import os
 class DocScanner(object):
     """An image scanner"""
 
-    def __init__(self, interactive=False, MIN_QUAD_AREA_RATIO=0.25, MAX_QUAD_ANGLE_RANGE=40):
+    def __init__(self, interactive=False, color_preserve=False, MIN_QUAD_AREA_RATIO=0.25, MAX_QUAD_ANGLE_RANGE=40):
         """
         Args:
             interactive (boolean): If True, user can adjust screen contour before
@@ -37,6 +37,7 @@ class DocScanner(object):
                 of its interior angles exceeds MAX_QUAD_ANGLE_RANGE. Defaults to 40.
         """        
         self.interactive = interactive
+        self.color_preserve = color_preserve
         self.MIN_QUAD_AREA_RATIO = MIN_QUAD_AREA_RATIO
         self.MAX_QUAD_ANGLE_RANGE = MAX_QUAD_ANGLE_RANGE        
 
@@ -285,21 +286,24 @@ class DocScanner(object):
             screenCnt = self.interactive_get_contour(screenCnt, rescaled_image)
 
         # apply the perspective transformation
-        warped = transform.four_point_transform(orig, screenCnt * ratio)
+        output = transform.four_point_transform(orig, screenCnt * ratio) #warped
 
-        # convert the warped image to grayscale
-        gray = cv2.cvtColor(warped, cv2.COLOR_BGR2GRAY)
+        if self.color_preserve == False:
 
-        # sharpen image
-        sharpen = cv2.GaussianBlur(gray, (0,0), 3)
-        sharpen = cv2.addWeighted(gray, 1.5, sharpen, -0.5, 0)
+            # convert the warped image to grayscale
+            gray = cv2.cvtColor(output, cv2.COLOR_BGR2GRAY)
 
-        # apply adaptive threshold to get black and white effect
-        thresh = cv2.adaptiveThreshold(sharpen, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 21, 15)
+            # sharpen image
+            sharpen = cv2.GaussianBlur(gray, (0,0), 3)
+            sharpen = cv2.addWeighted(gray, 1.5, sharpen, -0.5, 0)
+
+            # apply adaptive threshold to get black and white effect
+            output = cv2.adaptiveThreshold(sharpen, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 21, 15) #thresh
+
 
         # save the transformed image
         basename = os.path.basename(image_path)
-        cv2.imwrite(OUTPUT_DIR + '/' + basename, thresh)
+        cv2.imwrite(OUTPUT_DIR + '/' + basename, output)
         print("Proccessed " + basename)
 
 
@@ -310,13 +314,17 @@ if __name__ == "__main__":
     group.add_argument("--image", help="Path to single image to be scanned")
     ap.add_argument("-i", action='store_true',
         help = "Flag for manually verifying and/or setting document corners")
+    ap.add_argument("-c", action='store_true',
+        help = "Flag to preserve color on the cropped images")
 
     args = vars(ap.parse_args())
     im_dir = args["images"]
     im_file_path = args["image"]
     interactive_mode = args["i"]
+    color_preserve_mode = args["c"]
 
-    scanner = DocScanner(interactive_mode)
+    scanner = DocScanner(interactive=interactive_mode,
+                            color_preserve=color_preserve_mode)
 
     valid_formats = [".jpg", ".jpeg", ".jp2", ".png", ".bmp", ".tiff", ".tif"]
 
