@@ -15,13 +15,13 @@ This project makes use of the transform and imutils modules from pyimagesearch (
 ![Image Directory of images to be processed](readme_media/before_after.gif)
 
 #### Here are some examples of images before and after scan:
-<img src="sample_images/cell_pic.jpg" height="450"> <img src="output/cell_pic.jpg" height="450">
+<img src="sample_images/cell_pic.jpg" height="450"> <img src="sample_output/cell_pic.jpg" height="450">
 
-<img src="sample_images/receipt.jpg" height="450"> <img src="output/receipt.jpg" height="450">
+<img src="sample_images/receipt.jpg" height="450"> <img src="sample_output/receipt.jpg" height="450">
 
-<img src="sample_images/math_cheat_sheet.JPG" height="450"> <img src="output/math_cheat_sheet.JPG" height="450">
+<img src="sample_images/math_cheat_sheet.JPG" height="450"> <img src="sample_output/math_cheat_sheet.JPG" height="450">
 
-<img src="sample_images/dollar_bill.JPG" width="350"> <img src="output/dollar_bill.JPG" width="350">
+<img src="sample_images/dollar_bill.JPG" width="350"> <img src="sample_output/dollar_bill.JPG" width="350">
 
 
 ### Usage
